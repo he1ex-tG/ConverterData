@@ -1,11 +1,11 @@
-package com.he1etg.converterdata
+package com.he1extg.converterdata
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class Application
+class ConverterDataApplication
 
 fun main(args: Array<String>) {
-	runApplication<Application>(*args)
+	runApplication<ConverterDataApplication>(*args)
 }

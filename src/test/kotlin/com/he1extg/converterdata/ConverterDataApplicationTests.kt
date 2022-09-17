@@ -1,10 +1,10 @@
-package com.he1etg.converterdata
+package com.he1extg.converterdata
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class ApplicationTests {
+class ConverterDataApplicationTests {
 
 	@Test
 	fun contextLoads() {
