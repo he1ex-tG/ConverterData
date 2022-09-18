@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    include:
+      # application-secrets.yaml
+      - secrets
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    # URL, username and password are defined in application-secrets.yaml
+    # URL:
+    # username:
+    # password:
+    platform: postgres
+    driver-class-name: org.postgresql.Driver

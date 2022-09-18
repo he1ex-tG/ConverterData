@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### Secrets ###
-/src/main/kotlin/com/he1extg/converterdata/security/Secret.kt
+/src/main/resources/application-secrets.yaml
