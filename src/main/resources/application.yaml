@@ -7,7 +7,8 @@ spring:
     database: POSTGRESQL
     show-sql: true
     hibernate:
-      ddl-auto: update
+      #ddl-auto: update
+      ddl-auto: create-drop
   datasource:
     # URL, username and password are defined in application-secrets.yaml
     # URL:
