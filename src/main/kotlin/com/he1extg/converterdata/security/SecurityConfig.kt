@@ -12,6 +12,9 @@ class SecurityConfig {
     @Bean
     fun enableOAuth2(http: HttpSecurity): SecurityFilterChain {
         http.invoke {
+            csrf {
+                disable()
+            }
             authorizeRequests {
                 authorize(anyRequest, permitAll)
             }
