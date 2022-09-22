@@ -7,7 +7,7 @@ import org.springframework.security.config.web.servlet.invoke
 import org.springframework.security.web.SecurityFilterChain
 
 @EnableWebSecurity
-class SecurityConfig {
+class SecurityConfiguration {
 
     @Bean
     fun enableOAuth2(http: HttpSecurity): SecurityFilterChain {

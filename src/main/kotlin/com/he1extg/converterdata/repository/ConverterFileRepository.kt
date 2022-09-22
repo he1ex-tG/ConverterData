@@ -17,4 +17,7 @@ interface ConverterFileRepository : CrudRepository<ConverterFile, Long> {
         @Param("converterUser") converterUser: String,
         @Param("fileName") fileName: String
     ): List<ByteArray>
+
+    @Query("select converterUser from ConverterFile group by converterUser")
+    fun findAllConverterUser(): List<String>
 }

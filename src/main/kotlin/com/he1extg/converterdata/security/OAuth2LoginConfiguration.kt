@@ -24,8 +24,14 @@ class OAuth2LoginConfiguration {
     private fun googleClientRegistration(): ClientRegistration {
         val registrationID = "google"
         return ClientRegistration.withRegistrationId(registrationID)
-            .clientId(registrations[registrationID]?.get("clientID") ?: throw Exception("Cant read ClientID for RegistrationID = \"$registrationID\""))
-            .clientSecret(registrations[registrationID]?.get("clientSecret") ?: throw Exception("Cant read ClientSecret for RegistrationID = \"$registrationID\""))
+            .clientId(
+                registrations[registrationID]?.get("clientID")
+                ?: throw Exception("Cant read ClientID for RegistrationID = \"$registrationID\"")
+            )
+            .clientSecret(
+                registrations[registrationID]?.get("clientSecret")
+                ?: throw Exception("Cant read ClientSecret for RegistrationID = \"$registrationID\"")
+            )
             .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .redirectUri("{baseUrl}/login/oauth2/code/{registrationId}")
