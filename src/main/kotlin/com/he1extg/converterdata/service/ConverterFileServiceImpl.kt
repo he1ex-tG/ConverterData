@@ -16,13 +16,18 @@ class ConverterFileServiceImpl : ConverterFileService {
         get() = SecurityContextHolder.getContext().authentication.name
 
     override fun getFileList(): List<String> {
-        return converterFileRepository.findAllByConverterUser(authenticatedUser)
-            .map { it.fileName }
+        return converterFileRepository.findAllFileNameByConverterUser(authenticatedUser)
     }
 
-    override fun getFile(fileName: String): ByteArray? {
-        return converterFileRepository.findAllByConverterUserAndFileName(authenticatedUser, fileName)
-            .firstOrNull()?.file
+    override fun getFile(fileName: String): ByteArray {
+        val converterFile = converterFileRepository.findAllByConverterUserAndFileName(authenticatedUser, fileName)
+        if (converterFile.size != 1) {
+            throw Exception(
+                "File extraction from database encountered with issue. " +
+                        "Expected file count = 1. Actually = ${converterFile.size}."
+            )
+        }
+        return converterFile.first()
     }
 
     override fun setFile(fileName: String, fileByteArray: ByteArray): Boolean {

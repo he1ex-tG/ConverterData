@@ -29,10 +29,10 @@ class ConverterFileController {
 
     @GetMapping("/{fileName:.+}")
     fun getFile(@PathVariable fileName: String): ResponseEntity<Resource> {
-        val fileByteArray: ByteArray? = converterFileService.getFile(fileName)
-        return if (fileByteArray != null) {
+        return try {
+            val fileByteArray: ByteArray = converterFileService.getFile(fileName)
             val resource: Resource = object : ByteArrayResource(fileByteArray) {
-                override fun getFilename(): String? {
+                override fun getFilename(): String {
                     return fileName
                 }
             }
@@ -40,7 +40,8 @@ class ConverterFileController {
                 HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"${resource.filename}\""
             ).body(resource)
-        } else {
+        }
+        catch (e: Exception) {
             ResponseEntity.noContent().header(
                 HttpHeaders.CONTENT_DISPOSITION,
                 ""
