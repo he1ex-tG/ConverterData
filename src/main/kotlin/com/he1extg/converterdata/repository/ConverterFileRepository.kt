@@ -7,10 +7,10 @@ import org.springframework.data.repository.query.Param
 import org.springframework.transaction.annotation.Transactional
 
 interface ConverterFileRepository : CrudRepository<ConverterFile, Long> {
-    @Query("select fileName from ConverterFile where converterUser=:converterUser")
-    fun findAllFileNameByConverterUser(
+    @Query("select id,fileName from ConverterFile where converterUser=:converterUser")
+    fun findAllIdAndFileNameByConverterUser(
         @Param("converterUser") converterUser: String
-    ): List<String>
+    ): Map<Long, String>
 
     @Transactional
     @Query("select file from ConverterFile where converterUser=:converterUser and fileName=:fileName")

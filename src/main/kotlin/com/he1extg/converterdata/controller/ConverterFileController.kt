@@ -1,5 +1,7 @@
 package com.he1extg.converterdata.controller
 
+import com.he1extg.converterdata.dto.ConverterFileDto
+import com.he1extg.converterdata.dto.ConverterFileDtoFactory
 import com.he1extg.converterdata.service.ConverterFileService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.io.ByteArrayResource
@@ -23,12 +25,13 @@ class ConverterFileController {
     lateinit var converterFileService: ConverterFileService
 
     @GetMapping
-    fun getFileList(): List<String> {
-        return converterFileService.getFileList()
+    fun getFileList(@RequestParam userName: String): List<ConverterFileDto> {
+        return converterFileService.getFileList(userName)
+            .map { ConverterFileDtoFactory.getFileList(it) }
     }
 
     @GetMapping("/{fileName:.+}")
-    fun getFile(@PathVariable fileName: String): ResponseEntity<Resource> {
+    fun getFile(@PathVariable fileId: Long): ResponseEntity<ConverterFileDto> {
         return try {
             val fileByteArray: ByteArray = converterFileService.getFile(fileName)
             val resource: Resource = object : ByteArrayResource(fileByteArray) {
