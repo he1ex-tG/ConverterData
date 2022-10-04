@@ -4,6 +4,7 @@ import com.he1extg.converterdata.entity.ConverterFile
 import com.he1extg.converterdata.repository.ConverterFileRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import java.io.FileNotFoundException
 
 @Service
 class ConverterFileServiceImpl : ConverterFileService {
@@ -11,42 +12,26 @@ class ConverterFileServiceImpl : ConverterFileService {
     @Autowired
     lateinit var converterFileRepository: ConverterFileRepository
 
-    override fun getFileList(): List<String> {
-        return converterFileRepository.findAllIdAndFileNameByConverterUser(authenticatedUser)
+    override fun getFileList(userName: String): List<ConverterFile> {
+        return converterFileRepository.findAllByConverterUser(userName)
     }
 
-    override fun getFile(fileName: String): ByteArray {
-        val converterFile = converterFileRepository.findAllByConverterUserAndFileName(authenticatedUser, fileName)
-        if (converterFile.size != 1) {
-            throw Exception(
+    override fun getFile(fileId: Long): ConverterFile {
+        val converterFile = converterFileRepository.findById(fileId)
+        return if (converterFile.isPresent) {
+            converterFile.get()
+        }
+        else {
+            throw FileNotFoundException(
                 "File extraction from database encountered with issue. " +
-                        "Expected file count = 1. Actually = ${converterFile.size}."
+                        "File with id = $fileId not found."
             )
         }
-        return converterFile.first()
     }
 
-    override fun setFile(fileName: String, fileByteArray: ByteArray): Boolean {
-        val newFile = ConverterFile(fileName, fileByteArray, authenticatedUser)
-        try {
-            converterFileRepository.save(newFile)
-        }
-        catch (e: Exception) {
-            return false
-        }
-        return true
+    override fun setFile(userName: String, fileName: String, fileByteArray: ByteArray) {
+        val newFile = ConverterFile(fileName, fileByteArray, userName)
+        converterFileRepository.save(newFile)
+        TODO("File count check")
     }
-
-    override fun getFileList(userName: String): Pair<Long, String> {
-        return converterFileRepository.findAllIdAndFileNameByConverterUser(userName).map {  }
-    }
-
-    override fun getFile(fileId: Long): ByteArray {
-        TODO("Not yet implemented")
-    }
-
-    override fun setFile(userName: String, fileName: String, fileByteArray: ByteArray): Boolean {
-        TODO("Not yet implemented")
-    }
-
 }
