@@ -4,9 +4,12 @@ import com.he1extg.converterdata.entity.ConverterFile
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
+import org.springframework.transaction.annotation.Transactional
 
 interface ConverterFileRepository : CrudRepository<ConverterFile, Long> {
-    @Query("select * from ConverterFile where converterUser=:converterUser", nativeQuery = true)
+
+    @Transactional
+    @Query("select c from ConverterFile c where c.converterUser = :converterUser")
     fun findAllByConverterUser(
         @Param("converterUser") converterUser: String
     ): List<ConverterFile>

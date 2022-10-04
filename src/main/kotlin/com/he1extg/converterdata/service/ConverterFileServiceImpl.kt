@@ -32,6 +32,6 @@ class ConverterFileServiceImpl : ConverterFileService {
     override fun setFile(userName: String, fileName: String, fileByteArray: ByteArray) {
         val newFile = ConverterFile(fileName, fileByteArray, userName)
         converterFileRepository.save(newFile)
-        TODO("File count check")
+        //TODO("File count check")
     }
 }
