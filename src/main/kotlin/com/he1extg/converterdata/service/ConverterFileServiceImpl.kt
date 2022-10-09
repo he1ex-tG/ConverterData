@@ -1,6 +1,9 @@
 package com.he1extg.converterdata.service
 
 import com.he1extg.converterdata.entity.ConverterFile
+import com.he1extg.converterdata.entity.dto.CFFnameBarrayDto
+import com.he1extg.converterdata.entity.dto.CFIdFnameDto
+import com.he1extg.converterdata.entity.dto.CFIdTstampDto
 import com.he1extg.converterdata.repository.ConverterFileRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -18,19 +21,19 @@ class ConverterFileServiceImpl(
 
     private val maxFilesToStore = config.maxFilesToStore.toInt()
 
-    override fun getFileList(userName: String): List<ConverterFile> {
-        return converterFileRepository.findAllByConverterUser(userName)
+    override fun getFileList(converterUser: String): List<CFIdFnameDto> {
+        return converterFileRepository.getConverterFileListByConverterUser(converterUser)
     }
 
-    override fun getFile(fileId: Long): ConverterFile {
-        val converterFile = converterFileRepository.findById(fileId)
+    override fun getFile(converterFileId: Long): CFFnameBarrayDto {
+        val converterFile = converterFileRepository.getConverterFileById(converterFileId)
         return if (converterFile.isPresent) {
             converterFile.get()
         }
         else {
             throw FileNotFoundException(
                 "File extraction from database encountered with issue. " +
-                        "File with id = $fileId not found."
+                        "File with id = $converterFileId not found."
             )
         }
     }
@@ -39,9 +42,11 @@ class ConverterFileServiceImpl(
      * Control amount of stored files by user.
      */
     private fun ConverterFileRepository.maxFilesControl(converterUser: String, amount: Int): Boolean {
-        val converterFiles = this.findAllByConverterUser(converterUser)
+        val converterFiles = this.getConverterFileTimestampByConverterUser(converterUser)
         if (converterFiles.size > amount) {
-            val myTimestampComparator = Comparator<ConverterFile> { a, b -> a.timestamp.compareTo(b.timestamp) }
+            val myTimestampComparator = Comparator<CFIdTstampDto> { a, b ->
+                a.timestamp.compareTo(b.timestamp)
+            }
             val id = converterFiles.minOfWith(myTimestampComparator) { it }.id
             id?.let {
                 this.deleteById(id)
