@@ -26,7 +26,7 @@ class ConverterFileController {
         return if (fileList.isNotEmpty()) {
             ResponseEntity
                 .ok()
-                .body(fileList.map { ConverterFileDtoFactory.getFileList(it) })
+                .body(fileList.map { ConverterFileDtoFactory(it).fileList })
         }
         else {
             ResponseEntity
@@ -41,7 +41,7 @@ class ConverterFileController {
             val file = converterFileService.getFile(id)
             ResponseEntity
                 .ok()
-                .body(ConverterFileDtoFactory.getFile(file))
+                .body(ConverterFileDtoFactory(file).file)
         }
         catch (e: Exception) {
             ResponseEntity

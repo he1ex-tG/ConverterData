@@ -15,5 +15,5 @@ class ConverterFile(
     @Lob val file: ByteArray,
     var converterUser: String,
     var timestamp: Timestamp = Timestamp.valueOf(LocalDateTime.now()),
-    @Id @GeneratedValue var id: Long? = null
+    @Id @GeneratedValue var id: Long? = null,
 )

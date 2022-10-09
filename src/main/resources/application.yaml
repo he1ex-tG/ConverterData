@@ -11,10 +11,12 @@ spring:
       ddl-auto: create-drop
   datasource:
     # URL, username and password are defined in application-secrets.yaml
-    # URL:
-    # username:
-    # password:
+    # URL: <>
+    # username: <>
+    # password: <>
     platform: postgres
     driver-class-name: org.postgresql.Driver
 server:
   port: 8081
+storage:
+  max-files-to-store: 3
