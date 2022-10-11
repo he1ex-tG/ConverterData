@@ -1,6 +1,6 @@
 package com.he1extg.converterdata.entity.dto
 
-interface CFFnameBarrayDto {
+interface CfFilenameAndByteArrayDto {
     val fileName: String
     val file: ByteArray
 }

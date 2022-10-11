@@ -1,6 +1,6 @@
 package com.he1extg.converterdata.entity.dto
 
-interface CFIdFnameDto {
+interface CfIdAndFilenameDto {
     val id: Long?
     val fileName: String
 }

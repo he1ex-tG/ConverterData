@@ -1,9 +1,9 @@
 package com.he1extg.converterdata.service
 
 import com.he1extg.converterdata.entity.ConverterFile
-import com.he1extg.converterdata.entity.dto.CFFnameBarrayDto
-import com.he1extg.converterdata.entity.dto.CFIdFnameDto
-import com.he1extg.converterdata.entity.dto.CFIdTstampDto
+import com.he1extg.converterdata.entity.dto.CfFilenameAndByteArrayDto
+import com.he1extg.converterdata.entity.dto.CfIdAndFilenameDto
+import com.he1extg.converterdata.entity.dto.CfIdAndTimestampDto
 import com.he1extg.converterdata.repository.ConverterFileRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.EnableConfigurationProperties
@@ -21,11 +21,11 @@ class ConverterFileServiceImpl(
 
     private val maxFilesToStore = config.maxFilesToStore.toInt()
 
-    override fun getFileList(converterUser: String): List<CFIdFnameDto> {
+    override fun getFileList(converterUser: String): List<CfIdAndFilenameDto> {
         return converterFileRepository.getConverterFileListByConverterUser(converterUser)
     }
 
-    override fun getFile(converterFileId: Long): CFFnameBarrayDto {
+    override fun getFile(converterFileId: Long): CfFilenameAndByteArrayDto {
         val converterFile = converterFileRepository.getConverterFileById(converterFileId)
         return if (converterFile.isPresent) {
             converterFile.get()
@@ -44,7 +44,7 @@ class ConverterFileServiceImpl(
     private fun ConverterFileRepository.maxFilesControl(converterUser: String, amount: Int): Boolean {
         val converterFiles = this.getConverterFileTimestampByConverterUser(converterUser)
         if (converterFiles.size > amount) {
-            val myTimestampComparator = Comparator<CFIdTstampDto> { a, b ->
+            val myTimestampComparator = Comparator<CfIdAndTimestampDto> { a, b ->
                 a.timestamp.compareTo(b.timestamp)
             }
             val id = converterFiles.minOfWith(myTimestampComparator) { it }.id
