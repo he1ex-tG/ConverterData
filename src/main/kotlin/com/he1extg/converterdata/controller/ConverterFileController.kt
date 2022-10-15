@@ -1,7 +1,7 @@
 package com.he1extg.converterdata.controller
 
-import com.he1extg.converterdata.entity.dto.CfFilenameAndByteArrayDto
-import com.he1extg.converterdata.entity.dto.CfIdAndFilenameDto
+import com.he1extg.converterdata.dto.converterfile.FilenameBytearrayDTO
+import com.he1extg.converterdata.dto.converterfile.IdFilenameDTO
 import com.he1extg.converterdata.service.ConverterFileService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -21,7 +21,7 @@ class ConverterFileController {
     lateinit var converterFileService: ConverterFileService
 
     @GetMapping
-    fun getFileList(@RequestParam user: String): ResponseEntity<List<CfIdAndFilenameDto>> {
+    fun getFileList(@RequestParam user: String): ResponseEntity<List<IdFilenameDTO>> {
         if (user.isEmpty()) {
             return ResponseEntity
                 .badRequest()
@@ -41,7 +41,7 @@ class ConverterFileController {
     }
 
     @GetMapping("/{id}")
-    fun getFile(@PathVariable id: Long): ResponseEntity<CfFilenameAndByteArrayDto> {
+    fun getFile(@PathVariable id: Long): ResponseEntity<FilenameBytearrayDTO> {
         return try {
             val file = converterFileService.getFile(id)
             ResponseEntity

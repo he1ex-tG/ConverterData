@@ -1,9 +1,9 @@
 package com.he1extg.converterdata.repository
 
 import com.he1extg.converterdata.entity.ConverterFile
-import com.he1extg.converterdata.entity.dto.CfFilenameAndByteArrayDto
-import com.he1extg.converterdata.entity.dto.CfIdAndFilenameDto
-import com.he1extg.converterdata.entity.dto.CfIdAndTimestampDto
+import com.he1extg.converterdata.dto.converterfile.FilenameBytearrayDTO
+import com.he1extg.converterdata.dto.converterfile.IdTimestampDTO
+import com.he1extg.converterdata.dto.converterfile.IdFilenameDTO
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
@@ -13,24 +13,22 @@ import java.util.Optional
 interface ConverterFileRepository : CrudRepository<ConverterFile, Long> {
 
     /**
-     * Using custom query and DTO
+     * Using custom query and class DTO
      */
-    @Query("select c.id as id, c.fileName as fileName from ConverterFile c where c.converterUser = :converterUser")
+    @Query("select new com.he1extg.converterdata.dto.converterfile.IdFilenameDTO(c.id, c.fileName) from ConverterFile c where c.converterUser = :converterUser")
     fun getConverterFileListByConverterUser(
         @Param("converterUser") converterUser: String
-    ): List<CfIdAndFilenameDto>
+    ): List<IdFilenameDTO>
 
     /**
-     * Using Transactional, custom query and DTO
+     * Using Transactional and class DTO
      */
     @Transactional
-    @Query("select c.file as file, c.fileName as fileName from ConverterFile c where c.id = :id")
-    fun getConverterFileById(
-        @Param("id") id: Long
-    ): Optional<CfFilenameAndByteArrayDto>
+    fun getConverterFileById(id: Long): Optional<FilenameBytearrayDTO>
 
     /**
-     * Using auto built query and DTO
+     * Using auto built query and interface DTO
+     * Query looks like this: @Query("select c.id as id, c.timestamp as timestamp from ConverterFile c where c.converterUser = :converterUser")
      */
-    fun getConverterFileTimestampByConverterUser(converterUser: String): List<CfIdAndTimestampDto>
+    fun getConverterFileTimestampByConverterUser(converterUser: String): List<IdTimestampDTO>
 }

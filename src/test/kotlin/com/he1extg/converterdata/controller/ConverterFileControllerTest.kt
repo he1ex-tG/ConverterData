@@ -1,7 +1,7 @@
 package com.he1extg.converterdata.controller
 
-import com.he1extg.converterdata.entity.dto.FilenameBytearrayDTO
-import com.he1extg.converterdata.entity.dto.IdFilenameDTO
+import com.he1extg.converterdata.dto.converterfile.FilenameBytearrayDTO
+import com.he1extg.converterdata.dto.converterfile.IdFilenameDTO
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.MethodOrderer
@@ -120,9 +120,7 @@ internal class ConverterFileControllerTest {
         val requestEntity = RequestEntity.get("/api/v1/files/1")
             .build()
 
-        val answer = testRestTemplate.exchange(
-            requestEntity, FilenameBytearrayDTO::class.java
-        )
+        val answer = testRestTemplate.exchange(requestEntity, FilenameBytearrayDTO::class.java)
 
         Assertions.assertThat(answer.statusCode).isEqualTo(HttpStatus.OK)
         Assertions.assertThat(answer.body).isNotNull
