@@ -34,14 +34,37 @@ More info in [usage](#usage) section.
 ### 2. Files store
 
 File storage is based on [Spring Data](https://spring.io/projects/spring-data) 
-project.  [PostgreSQL](https://www.postgresql.org/) database. 
+project and [PostgresSQL](https://www.postgresql.org/). String Data find in 
+project files all [entities](#21-entities) and rebuild database structure 
+accordingly.
+> __Note__
+> 
+> By default, database cleared and rebuild structure on each project restart. 
+> It can be configured by changing corresponding parameter in 
+> `application.yaml`
+
+Entities are used by [repositories](#23-repositories) to exchange data with 
+database. For reduce traffic and performance increase used lightweight 
+[DTOs](#22-dto) instead entire entities. DTOs also used by [API](#1-api) in 
+some responses. Project logic is placed in [service](#24-service) layer.
 
 #### 2.1. Entities
+
+    com.he1extg.converterdata.entity
+
+There is just one entity. 
+
 #### 2.2. DTO
+
+    com.he1extg.converterdata.dto.converterfile
+
 #### 2.3. Repositories
+
+    com.he1extg.converterdata.repository
+
 #### 2.4. Service
 
-
+    com.he1extg.converterdata.service
 
 Converting a PDF file into text (array of bytes) is made using the
 [ITextPDF](https://itextpdf.com/) library. Then the text is converted by 
