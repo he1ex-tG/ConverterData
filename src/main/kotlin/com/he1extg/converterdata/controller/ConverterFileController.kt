@@ -51,7 +51,7 @@ class ConverterFileController {
             <div>Request: Method - GET; Param - user</div>
             <div>Response: Content type - application/json if returned list is not empty; Return type - ResponseEntity with List of IdFilenameDTO</div>
             <div>2. URI - <a href=$getFileStr>$getFileStr</a></div>
-            <div>Request: Method - GET; Path variable /{id} - id of file in database</div>
+            <div>Request: Method - GET; Path variable {id} - id of file in database</div>
             <div>Response: Content type - application/json if file exists in database; Return type - ResponseEntity with FilenameBytearrayDTO</div>
             <div>3. URI - <a href=$setFileStr>$setFileStr</a></div>
             <div>Request: Method - POST; Content type - multipart/form-data; Body params - user: String, file: MultipartFile</div>

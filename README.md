@@ -12,8 +12,8 @@ This is the part of [PDFReader](https://github.com/he1ex-tG/PDFReader) project.
 
 ## Structure
 
-This module provides an [API](#1-api) for [converting](#2-converter) PDF files 
-or plain text to audio format.
+This module provides an [API](#1-api) for saving files to the 
+[database](#2-files-store) and extracting.
 
 ### 1. API
 
@@ -21,14 +21,27 @@ The API is built using the features provided by
 [Spring Boot](https://spring.io/projects/spring-boot). It provides some 
 endpoints that can be used by third party services:
 
-| __Method__ | __Endpoint__ | __Description__                                                                                               |
-|------------|--------------|---------------------------------------------------------------------------------------------------------------|
-| GET        | /            | Get info                                                                                                      |
-| GET        | /api/v1      | Get API info (e.g. request method, content type, incoming data format and data type that returns in response) |
-| POST       | /api/v1/file | Convert pdf (only) file to mp3 byte array                                                                     |
-| POST       | /api/v1/text | Convert any text performed as byte array to mp3 byte array                                                    |
+| __Method__ | __Endpoint__       | __Description__                                                                                               |
+|------------|--------------------|---------------------------------------------------------------------------------------------------------------|
+| GET        | /                  | Get info                                                                                                      |
+| GET        | /api/v1            | Get API info (e.g. request method, content type, incoming data format and data type that returns in response) |
+| GET        | /api/v1/files      | Get a list of user files that is specified in the request parameter                                           |
+| GET        | /api/v1/files/{id} | Get file by id                                                                                                |
+| POST       | /api/v1/files      | Upload file                                                                                                   |
 
-### 2. Converter
+More info in [usage](#usage) section.
+
+### 2. Files store
+
+File storage is based on [Spring Data](https://spring.io/projects/spring-data) 
+project.  [PostgreSQL](https://www.postgresql.org/) database. 
+
+#### 2.1. Entities
+#### 2.2. DTO
+#### 2.3. Repositories
+#### 2.4. Service
+
+
 
 Converting a PDF file into text (array of bytes) is made using the
 [ITextPDF](https://itextpdf.com/) library. Then the text is converted by 
@@ -43,8 +56,7 @@ audio data to a file, as well as to hot convert from WAV to MP3 using
 
 ### 3. Tests
 
-Functional tests of both the API and the converter are located in `./src/test` 
-directory.
+Functional tests are located in `./src/test` directory.
 
 ## Build Instructions
 
@@ -69,7 +81,7 @@ Here:
 - [host] is the host where the project is running, [host] = `localhost` by 
 default.
 - [port] is the port. It can be changed in the `application.yaml` settings 
-file. [port] = `8082` by default.
+file. [port] = `8081` by default.
 
 Files conversion:
 
