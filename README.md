@@ -34,7 +34,7 @@ More info in [usage](#usage) section.
 ### 2. Files store
 
 File storage is based on [Spring Data](https://spring.io/projects/spring-data) 
-project and [PostgresSQL](https://www.postgresql.org/). String Data find in 
+project and [Postgres](https://www.postgresql.org/). String Data find in 
 project files all [entities](#21-entities) and rebuild database structure 
 accordingly.
 > __Note__
@@ -82,32 +82,13 @@ Service layer is layer between [API](#1-api) controller and
 [repository](#23-repositories). Its role is file limit control for each user.
 Yes, very simple, but necessary.
 
-
-Converting a PDF file into text (array of bytes) is made using the
-[ITextPDF](https://itextpdf.com/) library. Then the text is converted by 
-the [FreeTTS](https://freetts.sourceforge.io/) library.
-
-> __Note__. By default, FreeTTS does not provide the ability to
-output the audio stream as a `ByteArrayInputStream` or `ByteArray`, for example.
-So, I made my own implementation of the `AudioPlayer` interface.
-This approach makes it possible to avoid intermediate saving of
-audio data to a file, as well as to hot convert from WAV to MP3 using
-[Lame](https://lame.sourceforge.io/).
-
 ### 3. Tests
 
 Functional tests are located in `./src/test` directory.
 
 ## Build Instructions
 
-To successfully build the project, you should first compile Lame yourself. After 
-compilation, it will be placed in the Maven local repository (included in the 
-`repositories` section in the `build.gradle.kts` file). Compilation instructions 
-and source codes can be found on the [Lame](https://lame.sourceforge.io/) website.
-
-The project is built after the dependency issues are resolved. For example,
-
-from command line (in project root directory)
+Execute from command line (in project root directory)
 
     # ./gradlew bootJar
 
@@ -123,32 +104,43 @@ default.
 - [port] is the port. It can be changed in the `application.yaml` settings 
 file. [port] = `8081` by default.
 
-Files conversion:
+Remember that the controller returns a DTO. So it's impossible to save a byte 
+array from database to a file directly.
+
+Get file list for user:
 
 
 
-    # curl -F file=@C:/hw.pdf -o C:/hw.mp3 http://[host]:[port]/api/v1/file
+    # curl http://[host]:[port]/api/v1/files?user=SuperUser
 
-Text conversion:
+Upload file:
 
 
 
-    # curl -d "text=Hello world!" -o C:/hw.mp3 http://[host]:[port]/api/v1/text
+    # curl -F file=@C:/hw.mp3 -F user=SuperUser http://[host]:[port]/api/v1/files
+
+Download file:
+
+
+    # curl http://[host]:[port]/api/v1/files/1
 
 ## TODO
 
-- [x] Conversion process
-  - [x] PDF file to text
-  - [x] Text to audio format (WAV by default)
-    - [x] WAV to MP3
-    - [ ] Male/female voice choosing
+- [x] Main structure
+  - [x] Entities
+    - [x] ConverterFile entity
+    - [ ] User entity
+    - [x] DTO
+  - [x] Repositories
+  - [x] Service
 - [x] REST API endpoints
-  - [x] File conversion
-  - [x] Text conversion
+  - [x] Get file list (DTO)
+  - [x] Upload file
+  - [x] Download file (DTO)
+    - [ ] Download byte array 
 
 ## Technologies Used:
 
 1. [Spring Boot](https://spring.io/projects/spring-boot)
-2. [ITextPDF](https://itextpdf.com/)
-3. [FreeTTS](https://freetts.sourceforge.io/)
-4. [Lame](https://lame.sourceforge.io/)
+2. [Spring Data](https://spring.io/projects/spring-data)
+3. [Postgres](https://www.postgresql.org/) database
