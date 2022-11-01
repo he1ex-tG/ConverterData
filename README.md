@@ -78,13 +78,22 @@ were passed in their entirety to the consumer on any request. It was redundant.
 Now there are DTOs:
 
   `FilenameBytearrayDTO` - contains file name and body of file. It used when 
-consumer requests file;
+consumer requests the file;
 
   `IdFilenameDTO` - this and next DTO have no file body. It's used to provide to
 consumer information about files that stored by user.
 
   `IdTimestampDTO` - used to control the files amount (and it's main purpose of 
 poor [service](#24-service) layer).
+
+The first two DTOs are in the form of classes, the last one is in the form of 
+an interface. SpringData automatically implements the interface into a wrapper 
+class and populates it with data from the database. This is convenient to use 
+when actions with the interface are performed inside this module. But there 
+may be problems with their interpretation on the recipient's side. Therefore, 
+the DTOs that are used in responses to the consumer are classes. The 
+[repositories](#23-repositories) section has examples of the use of both classes 
+and interfaces. Still, this project is educational, as mentioned earlier.
 
 #### 2.3. Repositories
 
