@@ -13,7 +13,8 @@ This is the part of [PDFReader](https://github.com/he1ex-tG/PDFReader) project.
 ## Structure
 
 This module provides an [API](#1-api) for saving files to the 
-[database](#2-files-store) and extracting.
+[database](#2-files-store) and extracting. First interoperate with second 
+over the [service](#3-service) layer.
 
 ### 1. API
 
@@ -92,14 +93,30 @@ class and populates it with data from the database. This is convenient to use
 when actions with the interface are performed inside this module. But there 
 may be problems with their interpretation on the recipient's side. Therefore, 
 the DTOs that are used in responses to the consumer are classes. The 
-[repositories](#23-repositories) section has examples of the use of both classes 
+[repositories](#23-repositories) section has examples of using of both classes 
 and interfaces. Still, this project is educational, as mentioned earlier.
 
 #### 2.3. Repositories
 
 Repository class implements CrudRepository interface. It allows to auto create 
-methods that I need. But also it's possible to define queries directly. Both 
-approaches are presents in the code.
+methods that are needed. But also it's possible to define queries directly. Both 
+approaches are presents in the code. For instance,
+
+    /**
+     * Using custom query and class DTO
+     */
+    @Query("select new com.he1extg.converterdata.dto.converterfile.IdFilenameDTO(c.id, c.fileName) from ConverterFile c where c.converterUser = :converterUser")
+    fun getConverterFileListByConverterUser(
+        @Param("converterUser") converterUser: String
+    ): List<IdFilenameDTO>
+
+and
+
+    /**
+     * Using auto built query and interface DTO
+     * Query looks like this: @Query("select c.id as id, c.timestamp as timestamp from ConverterFile c where c.converterUser = :converterUser")
+     */
+    fun getConverterFileTimestampByConverterUser(converterUser: String): List<IdTimestampDTO>
 
 Even though the repository class based on ConverterFile [entity](#21-entities), 
 it returns [DTOs](#22-dto) as responses on queries. The main benefit of this 
@@ -107,13 +124,17 @@ is that byte arrays of stored files do not transfer to consumer when it
 requests only ids and filenames, for example. It reduces traffic and increases 
 entire performance.
 
-#### 2.4. Service
+Repositories are used on [service](#3-service) layer.
 
-Service layer is layer between [API](#1-api) controller and 
-[repository](#23-repositories). Its role is file limit control for each user.
-Yes, very simple, but necessary.
+### 3. Service
 
-### 3. Tests
+In this module, the service layer is quite simple. But its presence is necessary
+to build a clean architecture, I guess. It serves to access the 
+[database](#23-repositories) and pass the results to the [controller](#1-api). 
+The only complication is the implementation of the function to control the 
+maximum number of files uploaded by the user.
+
+### 4. Tests
 
 Functional tests are located in `./src/test` directory.
 
@@ -174,4 +195,4 @@ Download file:
 
 1. [Spring Boot](https://spring.io/projects/spring-boot)
 2. [Spring Data](https://spring.io/projects/spring-data)
-3. [Postgres](https://www.postgresql.org/) database
+3. [Postgres](https://www.postgresql.org/)
