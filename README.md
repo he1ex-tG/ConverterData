@@ -1,6 +1,6 @@
 # "Converter: PDF to MP3" - Data
 
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/he1ex-tG/ConverterAPI?logo=GitHub) ![GitHub last commit](https://img.shields.io/github/last-commit/he1ex-tG/ConverterAPI?logo=GitHub) ![GitHub issues](https://img.shields.io/github/issues/he1ex-tG/ConverterAPI?logo=GitHub) ![GitHub pull requests](https://img.shields.io/github/issues-pr/he1ex-tG/ConverterAPI?logo=GitHub) ![GitHub](https://img.shields.io/github/license/he1ex-tg/converterapi?logo=GitHub)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/he1ex-tG/ConverterData?logo=GitHub) ![GitHub last commit](https://img.shields.io/github/last-commit/he1ex-tG/ConverterData?logo=GitHub) ![GitHub issues](https://img.shields.io/github/issues/he1ex-tG/ConverterData?logo=GitHub) ![GitHub pull requests](https://img.shields.io/github/issues-pr/he1ex-tG/ConverterData?logo=GitHub) ![GitHub](https://img.shields.io/github/license/he1ex-tg/converterdata?logo=GitHub)
 
 This is a study project aimed at gaining practical experience at
 working with the Spring Framework, designing and developing multi-component
