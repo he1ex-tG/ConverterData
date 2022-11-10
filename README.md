@@ -49,7 +49,7 @@ database structure accordingly.
 Entities are used by [repositories](#23-repositories) to exchange data with 
 database. For reduce traffic and performance increase used lightweight 
 [DTOs](#22-dto) instead entire entities. DTOs also used by [API](#1-api) in 
-some responses. Project logic is placed in [service](#24-service) layer.
+some responses. Project logic is placed in [service](#3-service) layer.
 
 #### 2.1. Entities
 
@@ -86,7 +86,7 @@ consumer requests the file;
 consumer information about files that stored by user.
 
   `IdTimestampDTO` - used to control the files amount (and it's main purpose of 
-poor [service](#24-service) layer).
+poor [service](#3-service) layer).
 
 The first two DTOs are in the form of classes, the last one is in the form of 
 an interface. SpringData automatically implements the interface into a wrapper 
