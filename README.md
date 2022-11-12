@@ -124,8 +124,8 @@ and
 
 Even though the repository class is based on ConverterFile [entity](#21-entities), 
 it returns [DTOs](#22-dto) as responses on queries. The main benefit of this 
-is that byte arrays of stored files does not transfer to consumer when it 
-requests only ids and filenames, for example. It reduces traffic and increases 
+is that byte arrays of stored files are not transferred to consumer when he 
+requests only ids and filenames, for example. This reduces traffic and increases 
 entire performance.
 
 Repositories are used on [service](#3-service) layer.
@@ -135,7 +135,7 @@ Repositories are used on [service](#3-service) layer.
 In this module, the service layer is quite simple. But its presence is necessary
 to build a clean architecture. It serves to access the 
 [database](#23-repositories) and pass the results to the [controller](#1-api). 
-The only complication is the implementation of the function to control the 
+The only complication is the implementation of the function that controls the 
 maximum number of files uploaded by the user.
 
 ### 4. Tests
