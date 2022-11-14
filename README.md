@@ -47,16 +47,16 @@ them.
 > project restart. It can be configured by changing corresponding parameter in 
 > `application.yaml` or passing it by another way.
 
-Entities are used by [repositories](#23-repositories) to exchange data with 
-database. To reduce traffic and increase performance lightweight [DTOs](#22-dto) 
-are used instead of entire entities. [DTOs](#22-dto) also are used by 
-[API](#1-api) in some responses. Project logic is in the [service](#3-service) 
-layer.
+[Entities](#21-entities) are used by [repositories](#23-repositories) to exchange 
+data with database. Lightweight [DTOs](#22-dto) are used instead of entire 
+[entities](#21-entities) to reduce traffic and increase performance. 
+[DTOs](#22-dto) are also used by [API](#1-api) in some responses. Project logic 
+is in the [service](#3-service) layer.
 
 #### 2.1. Entities
 
-There is just one entity - ConverterFile. It's enough to achieve the project 
-goals. Class ConverterFile contains field that describes uploaded file.
+There is just one entity - `ConverterFile`. It's enough to achieve the project 
+goals. Class `ConverterFile` contains fields that describe uploaded file.
 
 Values specified for each file:
 
@@ -81,7 +81,7 @@ were passed in entirely to the consumer on any request. It was redundant.
 
 Now there are DTOs:
 
-  `FilenameBytearrayDTO` - contains file name and body. It's used when consumer 
+  `FilenameBytearrayDTO` - contains file name and body. It is used when consumer 
 requests the file;
 
   `IdFilenameDTO` - this and the next DTO have no file body. It's used to 
@@ -102,8 +102,8 @@ as mentioned earlier.
 
 #### 2.3. Repositories
 
-Repository class implements CrudRepository interface. It allows to auto create 
-methods that are needed. But also it's possible to define queries directly. Both 
+Repository interface extends `CrudRepository` interface. It allows to auto create 
+methods that are needed. But also it is possible to define queries directly. Both 
 approaches are presented in the code. For instance,
 
     /**
@@ -122,10 +122,10 @@ and
      */
     fun getConverterFileTimestampByConverterUser(converterUser: String): List<IdTimestampDTO>
 
-Even though the repository class is based on ConverterFile [entity](#21-entities), 
+Even though the repository class is based on `ConverterFile` [entity](#21-entities), 
 it returns [DTOs](#22-dto) as responses on queries. The main benefit of this 
-is that byte arrays of stored files are not transferred to consumer when he 
-requests only ids and filenames, for example. This reduces traffic and increases 
+is that `ByteArray`s of stored files are not transferred to consumer when he 
+requests only IDs and filenames, for example. This reduces traffic and increases 
 entire performance.
 
 Repositories are used on [service](#3-service) layer.
@@ -161,7 +161,7 @@ default.
 file. [port] = `8081` by default.
 
 Remember that the controller returns a DTO. So it's impossible to save a byte 
-array from database to a file directly.
+array from the database to a file directly.
 
 Get file list for user:
 
