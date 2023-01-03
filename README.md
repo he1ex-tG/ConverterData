@@ -28,7 +28,8 @@ endpoints that can be used by third party services:
 | GET        | /api/v1            | Get API info (e.g. request method, content type, incoming data format and data type that returns in response) |
 | GET        | /api/v1/files      | Get a list of user files that is specified in the request parameter                                           |
 | GET        | /api/v1/files/{id} | Get file by id                                                                                                |
-| POST       | /api/v1/files      | Upload file                                                                                                   |
+| POST       | /api/v1/multipart  | Upload multipart file                                                                                         |
+| POST       | /api/v1/files      | Upload file via JSON transfer data                                                                            |
 
 More info in the [usage](#usage) section.
 
@@ -89,6 +90,9 @@ provide to consumer information about stored files.
 
   `IdTimestampDTO` - is used to control the files amount (and its main purpose 
 of poor [service](#3-service) layer).
+
+  `FileUploadDTO` - is used to upload structured file data instead multipart file 
+form.
 
 The first two DTOs are in the form of classes, the last one is in the form of 
 an interface. [SpringData](https://spring.io/projects/spring-data) automatically 
@@ -173,7 +177,7 @@ Upload file:
 
 
 
-    # curl -F file=@C:/hw.mp3 -F user=SuperUser http://[host]:[port]/api/v1/files
+    # curl -F file=@C:/hw.mp3 -F user=SuperUser http://[host]:[port]/api/v1/multipart
 
 Download file:
 
