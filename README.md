@@ -22,14 +22,14 @@ The API is built using the features provided by
 [Spring Boot](https://spring.io/projects/spring-boot). It has some 
 endpoints that can be used by third party services:
 
-| __Method__ | __Endpoint__       | __Description__                                                                                               |
-|------------|--------------------|---------------------------------------------------------------------------------------------------------------|
-| GET        | /                  | Get info                                                                                                      |
-| GET        | /api/v1            | Get API info (e.g. request method, content type, incoming data format and data type that returns in response) |
-| GET        | /api/v1/files      | Get a list of user files that is specified in the request parameter                                           |
-| GET        | /api/v1/files/{id} | Get file by id                                                                                                |
-| POST       | /api/v1/multipart  | Upload multipart file                                                                                         |
-| POST       | /api/v1/files      | Upload file via JSON transfer data                                                                            |
+| __Method__ | __Endpoint__            | __Description__                                                                                               |
+|------------|-------------------------|---------------------------------------------------------------------------------------------------------------|
+| GET        | /                       | Get info                                                                                                      |
+| GET        | /api/v1                 | Get API info (e.g. request method, content type, incoming data format and data type that returns in response) |
+| GET        | /api/v1/files           | Get a list of user files that is specified in the request parameter                                           |
+| GET        | /api/v1/files/{id}      | Get file by id                                                                                                |
+| POST       | /api/v1/files           | Upload file via JSON transfer data                                                                            |
+| POST       | /api/v1/files/multipart | Upload multipart file                                                                                         |
 
 More info in the [usage](#usage) section.
 
@@ -177,7 +177,7 @@ Upload file:
 
 
 
-    # curl -F file=@C:/hw.mp3 -F user=SuperUser http://[host]:[port]/api/v1/multipart
+    # curl -F file=@C:/hw.mp3 -F user=SuperUser http://[host]:[port]/api/v1/files/multipart
 
 Download file:
 
