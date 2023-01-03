@@ -18,6 +18,8 @@ class ConverterFileController {
     @Autowired
     lateinit var converterFileService: ConverterFileService
 
+    /**
+    TODO Replace boilerplate code
     @GetMapping
     fun root(): String {
         val getFileList = MvcUriComponentsBuilder.fromMethodName(
@@ -53,8 +55,11 @@ class ConverterFileController {
             <div>Request: Method - POST; Content type - multipart/form-data; Body params - user: String, file: MultipartFile</div>
             <div>Response: Return type - ResponseEntity with Unit (just status)</div>
          """.trimIndent()
-    }
+    }*/
 
+    /**
+     * TODO Add null username handling - return list of all stored files
+     */
     @GetMapping("/files")
     fun getFileList(@RequestParam user: String): ResponseEntity<List<IdFilenameDTO>> {
         if (user.isEmpty()) {
@@ -90,21 +95,6 @@ class ConverterFileController {
         }
     }
 
-    @PostMapping("/multipart")
-    fun setMultipartFile(@RequestParam("user") user: String, @RequestParam("file") file: MultipartFile): ResponseEntity<Unit> {
-        return if (user.isEmpty() || file.isEmpty || file.originalFilename.isNullOrBlank()) {
-            ResponseEntity
-                .badRequest()
-                .build()
-        }
-        else {
-            converterFileService.setFile(user, file.originalFilename!!, file.bytes)
-            ResponseEntity
-                .ok()
-                .build()
-        }
-    }
-
     @PostMapping("/files")
     fun setFile(@RequestBody fileUploadDTO: FileUploadDTO?): ResponseEntity<Unit> {
         return if (fileUploadDTO?.content == null || fileUploadDTO.content.isEmpty()) {
@@ -113,6 +103,21 @@ class ConverterFileController {
                 .build()
         } else {
             converterFileService.setFile(fileUploadDTO.user, fileUploadDTO.name, fileUploadDTO.content)
+            ResponseEntity
+                .ok()
+                .build()
+        }
+    }
+
+    @PostMapping("/files/multipart")
+    fun setMultipartFile(@RequestParam("user") user: String, @RequestParam("file") file: MultipartFile): ResponseEntity<Unit> {
+        return if (user.isEmpty() || file.isEmpty || file.originalFilename.isNullOrBlank()) {
+            ResponseEntity
+                .badRequest()
+                .build()
+        }
+        else {
+            converterFileService.setFile(user, file.originalFilename!!, file.bytes)
             ResponseEntity
                 .ok()
                 .build()
