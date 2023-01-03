@@ -1,8 +1,9 @@
 package com.he1extg.converterdata.controller
 
-import com.he1extg.converterdata.dto.converterfile.FilenameBytearrayDTO
-import com.he1extg.converterdata.dto.converterfile.IdFilenameDTO
-import org.assertj.core.api.Assertions
+import com.he1extg.converterdata.dto.FilenameBytearrayDTO
+import com.he1extg.converterdata.dto.IdFilenameDTO
+import com.he1extg.converterdata.dto.FileUploadDTO
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Order
@@ -33,7 +34,7 @@ internal class ConverterFileControllerTest {
 
         val answer = testRestTemplate.exchange(requestEntity, Unit::class.java)
 
-        Assertions.assertThat(answer.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
+        assertThat(answer.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
     }
 
     @Order(2)
@@ -48,7 +49,7 @@ internal class ConverterFileControllerTest {
 
         val answer = testRestTemplate.exchange(requestEntity, List::class.java)
 
-        Assertions.assertThat(answer.statusCode).isEqualTo(HttpStatus.NO_CONTENT)
+        assertThat(answer.statusCode).isEqualTo(HttpStatus.NO_CONTENT)
     }
 
     @Order(3)
@@ -59,24 +60,24 @@ internal class ConverterFileControllerTest {
 
         val answer = testRestTemplate.exchange(requestEntity, Unit::class.java)
 
-        Assertions.assertThat(answer.statusCode).isEqualTo(HttpStatus.NO_CONTENT)
+        assertThat(answer.statusCode).isEqualTo(HttpStatus.NO_CONTENT)
     }
 
     @Order(4)
     @Test
     fun `setFile with incorrect params will return HttpStatus = BAD_REQEST`() {
-        val requestEntity = RequestEntity.post("/api/v1/files")
+        val requestEntity = RequestEntity.post("/api/v1/multipart")
             .build()
 
         val answer = testRestTemplate.exchange(requestEntity, Unit::class.java)
 
-        Assertions.assertThat(answer.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
+        assertThat(answer.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
     }
 
     @Order(5)
     @Test
     fun `setFile with correct params will return HttpStatus = OK`() {
-        val requestEntity = RequestEntity.post("/api/v1/files")
+        val requestEntity = RequestEntity.post("/api/v1/multipart")
             .contentType(MediaType.MULTIPART_FORM_DATA)
             .body(
                 LinkedMultiValueMap<String, Any>().apply {
@@ -87,7 +88,7 @@ internal class ConverterFileControllerTest {
 
         val answer = testRestTemplate.exchange(requestEntity, Unit::class.java)
 
-        Assertions.assertThat(answer.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(answer.statusCode).isEqualTo(HttpStatus.OK)
     }
 
     @Order(6)
@@ -106,26 +107,91 @@ internal class ConverterFileControllerTest {
             object : ParameterizedTypeReference<List<IdFilenameDTO>>() {}
         )
 
-        Assertions.assertThat(answer.statusCode).isEqualTo(HttpStatus.OK)
-        Assertions.assertThat(answer.body).isNotNull
+        assertThat(answer.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(answer.body).isNotNull
         val returnList = answer.body!!
-        Assertions.assertThat(returnList.size).isEqualTo(1)
-        Assertions.assertThat(returnList[0].id).isEqualTo(1)
-        Assertions.assertThat(returnList[0].fileName).isEqualTo("test.mp3")
+        assertThat(returnList.size).isEqualTo(1)
+        assertThat(returnList[0].id).isEqualTo(1)
+        assertThat(returnList[0].fileName).isEqualTo("test.mp3")
     }
 
     @Order(7)
     @Test
-    fun `getFile with correct id will return HttpStatus = OK and file data`() {
+    fun `getFile with correct id = 1 will return HttpStatus = OK and file data`() {
         val requestEntity = RequestEntity.get("/api/v1/files/1")
             .build()
 
         val answer = testRestTemplate.exchange(requestEntity, FilenameBytearrayDTO::class.java)
 
-        Assertions.assertThat(answer.statusCode).isEqualTo(HttpStatus.OK)
-        Assertions.assertThat(answer.body).isNotNull
+        assertThat(answer.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(answer.body).isNotNull
         val returnData = answer.body!!
-        Assertions.assertThat(returnData.fileName).isEqualTo("test.mp3")
-        Assertions.assertThat(returnData.file.decodeToString()).contains("LAME")
+        assertThat(returnData.fileName).isEqualTo("test.mp3")
+        assertThat(returnData.file.decodeToString()).contains("LAME")
+    }
+
+    @Order(8)
+    @Test
+    fun `setFile via null JSON transfer object`() {
+        val requestEntity = RequestEntity.post("/api/v1/files")
+            .contentType(MediaType.APPLICATION_JSON)
+            .build()
+
+        val answer = testRestTemplate.exchange(requestEntity, Unit::class.java)
+
+        assertThat(answer.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
+    }
+
+    @Order(9)
+    @Test
+    fun `setFile via incorrect JSON transfer object with empty content`() {
+        val fileUploadDTO = FileUploadDTO(
+            byteArrayOf(),
+            "testFilename",
+            "testUser"
+        )
+        val requestEntity = RequestEntity.post("/api/v1/files")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(
+                fileUploadDTO
+            )
+
+        val answer = testRestTemplate.exchange(requestEntity, Unit::class.java)
+
+        assertThat(answer.statusCode).isEqualTo(HttpStatus.BAD_REQUEST)
+    }
+
+    @Order(10)
+    @Test
+    fun `setFile via correct JSON transfer object`() {
+        val fileUploadDTO = FileUploadDTO(
+            byteArrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+            "testFilename",
+            "testUser"
+        )
+        val requestEntity = RequestEntity.post("/api/v1/files")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(
+                fileUploadDTO
+            )
+
+        val answer = testRestTemplate.exchange(requestEntity, Unit::class.java)
+
+        assertThat(answer.statusCode).isEqualTo(HttpStatus.OK)
+    }
+
+    @Order(11)
+    @Test
+    fun `getFile with correct id = 2 will return HttpStatus = OK and file data`() {
+        val requestEntity = RequestEntity.get("/api/v1/files/2")
+            .build()
+
+        val answer = testRestTemplate.exchange(requestEntity, FilenameBytearrayDTO::class.java)
+
+        assertThat(answer.statusCode).isEqualTo(HttpStatus.OK)
+        assertThat(answer.body).isNotNull
+        val returnData = answer.body!!
+        assertThat(returnData.fileName).isEqualTo("testFilename")
+        assertThat(returnData.file.size).isEqualTo(10)
     }
 }
