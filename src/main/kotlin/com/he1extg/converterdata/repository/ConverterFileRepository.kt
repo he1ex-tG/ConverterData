@@ -1,9 +1,9 @@
 package com.he1extg.converterdata.repository
 
 import com.he1extg.converterdata.entity.ConverterFile
-import com.he1extg.converterdata.dto.converterfile.FilenameBytearrayDTO
-import com.he1extg.converterdata.dto.converterfile.IdTimestampDTO
-import com.he1extg.converterdata.dto.converterfile.IdFilenameDTO
+import com.he1extg.converterdata.dto.FilenameBytearrayDTO
+import com.he1extg.converterdata.dto.IdTimestampDTO
+import com.he1extg.converterdata.dto.IdFilenameDTO
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
@@ -15,7 +15,7 @@ interface ConverterFileRepository : CrudRepository<ConverterFile, Long> {
     /**
      * Using custom query and class DTO
      */
-    @Query("select new com.he1extg.converterdata.dto.converterfile.IdFilenameDTO(c.id, c.fileName) from ConverterFile c where c.converterUser = :converterUser")
+    @Query("select new com.he1extg.converterdata.dto.IdFilenameDTO(c.id, c.fileName) from ConverterFile c where c.converterUser = :converterUser")
     fun getConverterFileListByConverterUser(
         @Param("converterUser") converterUser: String
     ): List<IdFilenameDTO>

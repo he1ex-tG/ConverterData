@@ -1,9 +1,9 @@
 package com.he1extg.converterdata.service
 
 import com.he1extg.converterdata.entity.ConverterFile
-import com.he1extg.converterdata.dto.converterfile.FilenameBytearrayDTO
-import com.he1extg.converterdata.dto.converterfile.IdTimestampDTO
-import com.he1extg.converterdata.dto.converterfile.IdFilenameDTO
+import com.he1extg.converterdata.dto.FilenameBytearrayDTO
+import com.he1extg.converterdata.dto.IdFilenameDTO
+import com.he1extg.converterdata.dto.IdTimestampDTO
 import com.he1extg.converterdata.repository.ConverterFileRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.EnableConfigurationProperties

@@ -1,4 +1,4 @@
-package com.he1extg.converterdata.dto.converterfile
+package com.he1extg.converterdata.dto
 
 class IdFilenameDTO(
     val id: Long?,

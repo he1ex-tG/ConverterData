@@ -1,4 +1,4 @@
-package com.he1extg.converterdata.dto.converterfile
+package com.he1extg.converterdata.dto
 
 class FilenameBytearrayDTO(
     val fileName: String,

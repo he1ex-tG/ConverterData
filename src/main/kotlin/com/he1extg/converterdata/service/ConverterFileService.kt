@@ -1,7 +1,7 @@
 package com.he1extg.converterdata.service
 
-import com.he1extg.converterdata.dto.converterfile.FilenameBytearrayDTO
-import com.he1extg.converterdata.dto.converterfile.IdFilenameDTO
+import com.he1extg.converterdata.dto.FilenameBytearrayDTO
+import com.he1extg.converterdata.dto.IdFilenameDTO
 
 interface ConverterFileService {
 

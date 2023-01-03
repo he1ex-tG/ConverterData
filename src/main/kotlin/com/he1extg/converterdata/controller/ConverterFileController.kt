@@ -1,16 +1,12 @@
 package com.he1extg.converterdata.controller
 
-import com.he1extg.converterdata.dto.converterfile.FilenameBytearrayDTO
-import com.he1extg.converterdata.dto.converterfile.IdFilenameDTO
+import com.he1extg.converterdata.dto.FilenameBytearrayDTO
+import com.he1extg.converterdata.dto.IdFilenameDTO
+import com.he1extg.converterdata.dto.FileUploadDTO
 import com.he1extg.converterdata.service.ConverterFileService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder
 import java.time.LocalDateTime
@@ -94,8 +90,8 @@ class ConverterFileController {
         }
     }
 
-    @PostMapping("/files")
-    fun setFile(@RequestParam("user") user: String, @RequestParam("file") file: MultipartFile): ResponseEntity<Unit> {
+    @PostMapping("/multipart")
+    fun setMultipartFile(@RequestParam("user") user: String, @RequestParam("file") file: MultipartFile): ResponseEntity<Unit> {
         return if (user.isEmpty() || file.isEmpty || file.originalFilename.isNullOrBlank()) {
             ResponseEntity
                 .badRequest()
@@ -103,6 +99,20 @@ class ConverterFileController {
         }
         else {
             converterFileService.setFile(user, file.originalFilename!!, file.bytes)
+            ResponseEntity
+                .ok()
+                .build()
+        }
+    }
+
+    @PostMapping("/files")
+    fun setFile(@RequestBody fileUploadDTO: FileUploadDTO?): ResponseEntity<Unit> {
+        return if (fileUploadDTO?.content == null || fileUploadDTO.content.isEmpty()) {
+            ResponseEntity
+                .badRequest()
+                .build()
+        } else {
+            converterFileService.setFile(fileUploadDTO.user, fileUploadDTO.name, fileUploadDTO.content)
             ResponseEntity
                 .ok()
                 .build()
