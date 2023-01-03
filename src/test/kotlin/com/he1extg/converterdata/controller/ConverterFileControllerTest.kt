@@ -66,7 +66,7 @@ internal class ConverterFileControllerTest {
     @Order(4)
     @Test
     fun `setFile with incorrect params will return HttpStatus = BAD_REQEST`() {
-        val requestEntity = RequestEntity.post("/api/v1/multipart")
+        val requestEntity = RequestEntity.post("/api/v1/files/multipart")
             .build()
 
         val answer = testRestTemplate.exchange(requestEntity, Unit::class.java)
@@ -77,7 +77,7 @@ internal class ConverterFileControllerTest {
     @Order(5)
     @Test
     fun `setFile with correct params will return HttpStatus = OK`() {
-        val requestEntity = RequestEntity.post("/api/v1/multipart")
+        val requestEntity = RequestEntity.post("/api/v1/files/multipart")
             .contentType(MediaType.MULTIPART_FORM_DATA)
             .body(
                 LinkedMultiValueMap<String, Any>().apply {
