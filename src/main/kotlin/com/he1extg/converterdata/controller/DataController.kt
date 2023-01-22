@@ -8,12 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder
-import java.time.LocalDateTime
 
 @RestController
 @RequestMapping("/api/v1")
-class ConverterFileController {
+class DataController {
 
     @Autowired
     lateinit var converterFileService: ConverterFileService
@@ -61,23 +59,11 @@ class ConverterFileController {
      * TODO Add null username handling - return list of all stored files
      */
     @GetMapping("/files")
-    fun getFileList(@RequestParam user: String): ResponseEntity<List<IdFilenameDTO>> {
-        if (user.isEmpty()) {
-            return ResponseEntity
-                .badRequest()
-                .build()
-        }
-        val fileList = converterFileService.getFileList(user)
-        return if (fileList.isNotEmpty()) {
-            ResponseEntity
-                .ok()
-                .body(fileList)
-        }
-        else {
-            ResponseEntity
-                .noContent()
-                .build()
-        }
+    fun getFileList(@RequestParam(required = false) username: String?): ResponseEntity<List<IdFilenameDTO>> {
+        val fileList = converterFileService.getFileList(username)
+        return ResponseEntity
+            .ok()
+            .body(fileList)
     }
 
     @GetMapping("/files/{id}")
