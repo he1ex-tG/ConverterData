@@ -13,7 +13,7 @@ class ApiError(
         .withZone(ZoneOffset.UTC)
         .format(Instant.now()),
     val debugMessage: String = "",
-    val subErrors: List<ApiSubError>? = null,
+    val subErrors: List<ApiValidationError>? = null,
 ) {
     constructor(
         status: HttpStatus,

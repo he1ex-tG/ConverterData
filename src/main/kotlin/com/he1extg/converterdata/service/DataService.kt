@@ -3,7 +3,7 @@ package com.he1extg.converterdata.service
 import com.he1extg.converterdata.dto.FilenameBytearrayDTO
 import com.he1extg.converterdata.dto.IdFilenameDTO
 
-interface ConverterFileService {
+interface DataService {
 
     fun getFileList(username: String?): List<IdFilenameDTO>
     fun getFile(converterFileId: Long): FilenameBytearrayDTO
