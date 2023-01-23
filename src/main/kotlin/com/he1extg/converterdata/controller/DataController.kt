@@ -3,20 +3,19 @@ package com.he1extg.converterdata.controller
 import com.he1extg.converterdata.dto.FilenameBytearrayDTO
 import com.he1extg.converterdata.dto.IdFilenameDTO
 import com.he1extg.converterdata.dto.FileUploadDTO
-import com.he1extg.converterdata.service.ConverterFileService
+import com.he1extg.converterdata.service.DataService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder
-import java.time.LocalDateTime
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/v1")
-class ConverterFileController {
+class DataController {
 
     @Autowired
-    lateinit var converterFileService: ConverterFileService
+    lateinit var dataService: DataService
 
     /**
     TODO Replace boilerplate code
@@ -57,70 +56,35 @@ class ConverterFileController {
          """.trimIndent()
     }*/
 
-    /**
-     * TODO Add null username handling - return list of all stored files
-     */
     @GetMapping("/files")
-    fun getFileList(@RequestParam user: String): ResponseEntity<List<IdFilenameDTO>> {
-        if (user.isEmpty()) {
-            return ResponseEntity
-                .badRequest()
-                .build()
-        }
-        val fileList = converterFileService.getFileList(user)
-        return if (fileList.isNotEmpty()) {
-            ResponseEntity
-                .ok()
-                .body(fileList)
-        }
-        else {
-            ResponseEntity
-                .noContent()
-                .build()
-        }
+    fun getFileList(@RequestParam(required = false) username: String?): ResponseEntity<List<IdFilenameDTO>> {
+        val fileList = dataService.getFileList(username)
+        return ResponseEntity
+            .ok()
+            .body(fileList)
     }
 
     @GetMapping("/files/{id}")
     fun getFile(@PathVariable id: Long): ResponseEntity<FilenameBytearrayDTO> {
-        return try {
-            val file = converterFileService.getFile(id)
-            ResponseEntity
-                .ok()
-                .body(file)
-        }
-        catch (e: Exception) {
-            ResponseEntity
-                .noContent()
-                .build()
-        }
+        val file = dataService.getFile(id)
+        return ResponseEntity
+            .ok()
+            .body(file)
     }
 
     @PostMapping("/files")
-    fun setFile(@RequestBody fileUploadDTO: FileUploadDTO?): ResponseEntity<Unit> {
-        return if (fileUploadDTO?.content == null || fileUploadDTO.content.isEmpty()) {
-            ResponseEntity
-                .badRequest()
-                .build()
-        } else {
-            converterFileService.setFile(fileUploadDTO.user, fileUploadDTO.name, fileUploadDTO.content)
-            ResponseEntity
-                .ok()
-                .build()
-        }
+    fun setFile(@Valid @RequestBody fileUploadDTO: FileUploadDTO): ResponseEntity<Unit> {
+        dataService.setFile(fileUploadDTO.username, fileUploadDTO.filename, fileUploadDTO.content)
+        return ResponseEntity
+            .ok()
+            .build()
     }
 
     @PostMapping("/files/multipart")
-    fun setMultipartFile(@RequestParam("user") user: String, @RequestParam("file") file: MultipartFile): ResponseEntity<Unit> {
-        return if (user.isEmpty() || file.isEmpty || file.originalFilename.isNullOrBlank()) {
-            ResponseEntity
-                .badRequest()
-                .build()
-        }
-        else {
-            converterFileService.setFile(user, file.originalFilename!!, file.bytes)
-            ResponseEntity
-                .ok()
-                .build()
-        }
+    fun setMultipartFile(@RequestParam("username") username: String, @RequestParam("file") file: MultipartFile): ResponseEntity<Unit> {
+       dataService.setFile(username, file.originalFilename!!, file.bytes)
+       return ResponseEntity
+           .ok()
+           .build()
     }
 }

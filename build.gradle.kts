@@ -13,7 +13,7 @@ plugins {
 	id("org.jetbrains.kotlin.plugin.noarg") version "1.6.21"
 }
 
-group = "com.he1etg"
+group = "com.he1extg"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
@@ -30,6 +30,8 @@ dependencies {
 
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.postgresql:postgresql")
+
+	implementation("org.springframework.boot:spring-boot-starter-validation")
 }
 
 tasks.withType<KotlinCompile> {

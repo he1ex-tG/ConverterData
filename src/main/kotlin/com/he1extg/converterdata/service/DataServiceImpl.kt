@@ -4,25 +4,28 @@ import com.he1extg.converterdata.entity.ConverterFile
 import com.he1extg.converterdata.dto.FilenameBytearrayDTO
 import com.he1extg.converterdata.dto.IdFilenameDTO
 import com.he1extg.converterdata.dto.IdTimestampDTO
+import com.he1extg.converterdata.exception.NoFileInDatabaseException
 import com.he1extg.converterdata.repository.ConverterFileRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Service
-import java.io.FileNotFoundException
 
 @Service
-@EnableConfigurationProperties(ConverterFileServiceConfig::class)
-class ConverterFileServiceImpl(
-    config: ConverterFileServiceConfig,
-) : ConverterFileService {
+@EnableConfigurationProperties(DataServiceConfig::class)
+class DataServiceImpl(
+    config: DataServiceConfig,
+) : DataService {
 
     @Autowired
     lateinit var converterFileRepository: ConverterFileRepository
 
     private val maxFilesToStore = config.maxFilesToStore.toInt()
 
-    override fun getFileList(converterUser: String): List<IdFilenameDTO> {
-        return converterFileRepository.getConverterFileListByConverterUser(converterUser)
+    override fun getFileList(username: String?): List<IdFilenameDTO> {
+        return username?.let {
+            converterFileRepository.getConverterFileListByConverterUser(it)
+        }
+            ?: emptyList()
     }
 
     override fun getFile(converterFileId: Long): FilenameBytearrayDTO {
@@ -31,7 +34,7 @@ class ConverterFileServiceImpl(
             converterFile.get()
         }
         else {
-            throw FileNotFoundException(
+            throw NoFileInDatabaseException(
                 "File extraction from database encountered with issue. " +
                         "File with id = $converterFileId not found."
             )

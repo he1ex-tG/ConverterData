@@ -11,7 +11,7 @@ class RootController {
     @GetMapping
     fun root(): String {
         val apiUri = MvcUriComponentsBuilder.fromController(
-            ConverterFileController::class.java
+            DataController::class.java
         ).toUriString()
         return """
             <p>Server datetime: ${LocalDateTime.now()}</p>
