@@ -30,14 +30,8 @@ class DataServiceImpl(
 
     override fun getFile(converterFileId: Long): FilenameBytearrayDTO {
         val converterFile = converterFileRepository.getConverterFileById(converterFileId)
-        return if (converterFile.isPresent) {
-            converterFile.get()
-        }
-        else {
-            throw NoFileInDatabaseException(
-                "File extraction from database encountered with issue. " +
-                        "File with id = $converterFileId not found."
-            )
+        return converterFile.orElseThrow {
+            NoFileInDatabaseException("File extraction from database encountered with issue. File with id = $converterFileId not found.")
         }
     }
 
