@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
 
-private const val PREFIX_PROJECT_NAME = "ConverterData"
-
 @ControllerAdvice
 class DataErrorHandler : ResponseEntityExceptionHandler() {
 
@@ -52,7 +50,7 @@ class DataErrorHandler : ResponseEntityExceptionHandler() {
 
     @ExceptionHandler(Exception::class)
     fun handlerException(ex: Exception): ResponseEntity<Any> {
-        val apiError = ApiError(HttpStatus.INTERNAL_SERVER_ERROR, "${PREFIX_PROJECT_NAME}: ${ex.message}", ex)
+        val apiError = ApiError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal error.", ex)
         return buildResponseEntity(apiError)
     }
 
@@ -61,7 +59,7 @@ class DataErrorHandler : ResponseEntityExceptionHandler() {
      */
     @ExceptionHandler(NoFileInDatabaseException::class)
     fun handlerConverterEmptyStringException(ex: NoFileInDatabaseException): ResponseEntity<Any> {
-        val apiError = ApiError(HttpStatus.BAD_REQUEST, "${PREFIX_PROJECT_NAME}: ${ex.message}", ex)
+        val apiError = ApiError(HttpStatus.BAD_REQUEST, ex.message, ex)
         return buildResponseEntity(apiError)
     }
 
