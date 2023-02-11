@@ -4,7 +4,6 @@ import com.he1extg.converterdata.dto.FilenameBytearrayDTO
 import com.he1extg.converterdata.dto.IdFilenameDTO
 import com.he1extg.converterdata.dto.FileUploadDTO
 import com.he1extg.converterdata.service.DataService
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
@@ -12,11 +11,9 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/api/v1")
-class DataController {
-
-    @Autowired
-    lateinit var dataService: DataService
-
+class DataController(
+    private val dataService: DataService
+) {
     /**
     TODO Replace boilerplate code
     @GetMapping

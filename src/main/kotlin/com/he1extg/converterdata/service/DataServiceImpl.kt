@@ -6,7 +6,6 @@ import com.he1extg.converterdata.dto.IdFilenameDTO
 import com.he1extg.converterdata.dto.IdTimestampDTO
 import com.he1extg.converterdata.exception.NoFileInDatabaseException
 import com.he1extg.converterdata.repository.ConverterFileRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.stereotype.Service
 
@@ -14,10 +13,8 @@ import org.springframework.stereotype.Service
 @EnableConfigurationProperties(DataServiceConfig::class)
 class DataServiceImpl(
     config: DataServiceConfig,
+    private val converterFileRepository: ConverterFileRepository
 ) : DataService {
-
-    @Autowired
-    lateinit var converterFileRepository: ConverterFileRepository
 
     private val maxFilesToStore = config.maxFilesToStore.toInt()
 
