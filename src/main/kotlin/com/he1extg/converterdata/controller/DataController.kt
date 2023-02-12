@@ -6,7 +6,6 @@ import com.he1extg.converterdata.dto.FileUploadDTO
 import com.he1extg.converterdata.service.DataService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
 import javax.validation.Valid
 
 @RestController
@@ -75,13 +74,5 @@ class DataController(
         return ResponseEntity
             .ok()
             .build()
-    }
-
-    @PostMapping("/files/multipart")
-    fun setMultipartFile(@RequestParam("username") username: String, @RequestParam("file") file: MultipartFile): ResponseEntity<Unit> {
-       dataService.setFile(username, file.originalFilename!!, file.bytes)
-       return ResponseEntity
-           .ok()
-           .build()
     }
 }

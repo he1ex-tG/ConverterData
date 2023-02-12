@@ -15,7 +15,7 @@ interface ConverterFileRepository : CrudRepository<ConverterFile, Long> {
     /**
      * Using custom query and class DTO
      */
-    @Query("select new com.he1extg.converterdata.dto.IdFilenameDTO(c.id, c.fileName) from ConverterFile c where c.converterUser = :converterUser")
+    @Query("select new com.he1extg.converterdata.dto.IdFilenameDTO(c.id, c.filename) from ConverterFile c where c.converterUser = :converterUser")
     fun getConverterFileListByConverterUser(
         @Param("converterUser") converterUser: String
     ): List<IdFilenameDTO>

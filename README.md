@@ -61,7 +61,7 @@ goals. Class `ConverterFile` contains fields that describe uploaded file.
 
 Values specified for each file:
 
-    var fileName: String,
+    var filename: String,
     @Lob val file: ByteArray,
     var converterUser: String,
 

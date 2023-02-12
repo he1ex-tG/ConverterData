@@ -7,5 +7,5 @@ interface DataService {
 
     fun getFileList(username: String?): List<IdFilenameDTO>
     fun getFile(converterFileId: Long): FilenameBytearrayDTO
-    fun setFile(userName: String, fileName: String, fileByteArray: ByteArray)
+    fun setFile(userName: String, filename: String, fileByteArray: ByteArray)
 }

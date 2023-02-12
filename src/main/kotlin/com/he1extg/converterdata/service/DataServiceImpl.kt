@@ -50,8 +50,8 @@ class DataServiceImpl(
         return false
     }
 
-    override fun setFile(userName: String, fileName: String, fileByteArray: ByteArray) {
-        val newFile = ConverterFile(fileName, fileByteArray, userName)
+    override fun setFile(userName: String, filename: String, fileByteArray: ByteArray) {
+        val newFile = ConverterFile(filename, fileByteArray, userName)
         converterFileRepository.save(newFile)
         converterFileRepository.maxFilesControl(userName, maxFilesToStore)
     }
