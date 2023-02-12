@@ -17,7 +17,6 @@ import org.springframework.core.io.FileSystemResource
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.RequestEntity
-import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.util.UriComponentsBuilder
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -80,8 +79,14 @@ internal class DataControllerTest {
     @Order(4)
     @Test
     fun `setFile with incorrect params - return BAD_REQEST`() {
-        val requestEntity = RequestEntity.post("/api/v1/files/multipart")
-            .build()
+        val fileUploadDTO = FileUploadDTO(
+            byteArrayOf(1, 2, 3),
+            "",
+            "aaa"
+        )
+        val requestEntity = RequestEntity.post("/api/v1/files")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(fileUploadDTO)
 
         val answer = testRestTemplate.exchange(requestEntity, Unit::class.java)
 
@@ -91,14 +96,15 @@ internal class DataControllerTest {
     @Order(5)
     @Test
     fun `setFile with correct params - return OK`() {
-        val requestEntity = RequestEntity.post("/api/v1/files/multipart")
-            .contentType(MediaType.MULTIPART_FORM_DATA)
-            .body(
-                LinkedMultiValueMap<String, Any>().apply {
-                    add("username", "testUser")
-                    add("file", FileSystemResource("E:/test.mp3"))
-                }
-            )
+        val fileResource = FileSystemResource("E:/test.mp3")
+        val fileUploadDTO = FileUploadDTO(
+            fileResource.file.readBytes(),
+            "test.mp3",
+            "testUser"
+        )
+        val requestEntity = RequestEntity.post("/api/v1/files")
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(fileUploadDTO)
 
         val answer = testRestTemplate.exchange(requestEntity, Unit::class.java)
 
@@ -136,8 +142,8 @@ internal class DataControllerTest {
         assertThat(answer.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(answer.body).isNotNull
         val returnData = answer.body!!
-        assertThat(returnData.fileName).isEqualTo("test.mp3")
-        assertThat(returnData.file.decodeToString()).contains("LAME")
+        assertThat(returnData.filename).isEqualTo("test.mp3")
+        assertThat(returnData.content.decodeToString()).contains("LAME")
     }
 
     @Order(8)
@@ -207,7 +213,7 @@ internal class DataControllerTest {
         assertThat(answer.statusCode).isEqualTo(HttpStatus.OK)
         assertThat(answer.body).isNotNull
         val returnData = answer.body!!
-        assertThat(returnData.fileName).isEqualTo("testFilename")
-        assertThat(returnData.file.size).isEqualTo(10)
+        assertThat(returnData.filename).isEqualTo("testFilename")
+        assertThat(returnData.content.size).isEqualTo(10)
     }
 }
