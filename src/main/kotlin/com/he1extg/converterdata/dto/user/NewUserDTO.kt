@@ -1,8 +1,8 @@
-package com.he1extg.converterdata.dto
+package com.he1extg.converterdata.dto.user
 
 import javax.validation.constraints.NotBlank
 
-class UsernamePasswordDTO(
+class NewUserDTO(
     @field:NotBlank
     val username: String,
     @field:NotBlank

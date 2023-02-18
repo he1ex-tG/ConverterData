@@ -1,5 +1,6 @@
-package com.he1extg.converterdata.dto
+package com.he1extg.converterdata.dto.file
 
+import javax.validation.constraints.Min
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotEmpty
 
@@ -8,8 +9,8 @@ class FileUploadDTO(
     var content: ByteArray,
     @field:NotBlank(message = "Must be not blank.")
     var filename: String,
-    @field:NotBlank(message = "Must be not blank.")
-    var username: String,
+    @field:Min(value = 1, message = "Must be greater than zero.")
+    var userId: Long
 ) {
     val contentSize: Int
         get() = content.size
