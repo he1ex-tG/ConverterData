@@ -1,5 +1,7 @@
 package com.he1extg.converterdata.dao.file
 
+import com.he1extg.converterdata.dto.file.ContentDTO
+
 data class ContentDAO(
     val filename: String,
     val content: ByteArray
@@ -21,4 +23,6 @@ data class ContentDAO(
         result = 31 * result + content.contentHashCode()
         return result
     }
+
+    fun toContentDTO(): ContentDTO = ContentDTO(filename, content)
 }
