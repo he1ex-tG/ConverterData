@@ -1,6 +1,8 @@
 package com.he1extg.converterdata.controller
 
-import com.he1extg.converterdata.dto.UsernamePasswordDTO
+import com.he1extg.converterdata.dto.user.AuthenticationDTO
+import com.he1extg.converterdata.dto.user.NewUserDTO
+import com.he1extg.converterdata.dto.user.UserDTO
 import com.he1extg.converterdata.service.UserService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -12,8 +14,16 @@ class UserController(
     private val userService: UserService
 ) {
 
+    @GetMapping("/users/authentication/{username}")
+    fun getUserAuthentication(@PathVariable username: String): ResponseEntity<AuthenticationDTO> {
+        val user = userService.getUserAuthentication(username)
+        return ResponseEntity
+            .ok()
+            .body(user)
+    }
+
     @GetMapping("/users/{username}")
-    fun getUser(@PathVariable username: String): ResponseEntity<UsernamePasswordDTO> {
+    fun getUser(@PathVariable username: String): ResponseEntity<UserDTO> {
         val user = userService.getUser(username)
         return ResponseEntity
             .ok()
@@ -21,8 +31,8 @@ class UserController(
     }
 
     @PostMapping("/users")
-    fun addUser(@Valid @RequestBody usernamePasswordDTO: UsernamePasswordDTO): ResponseEntity<Unit> {
-        userService.addUser(usernamePasswordDTO.username, usernamePasswordDTO.password)
+    fun addUser(@Valid @RequestBody newUser: NewUserDTO): ResponseEntity<Unit> {
+        userService.addUser(newUser.username, newUser.password)
         return ResponseEntity
             .ok()
             .build()

@@ -1,8 +1,8 @@
 package com.he1extg.converterdata.controller
 
-import com.he1extg.converterdata.dto.FilenameBytearrayDTO
-import com.he1extg.converterdata.dto.IdFilenameDTO
-import com.he1extg.converterdata.dto.FileUploadDTO
+import com.he1extg.converterdata.dto.file.ContentDTO
+import com.he1extg.converterdata.dto.file.FilenameDTO
+import com.he1extg.converterdata.dto.file.FileUploadDTO
 import com.he1extg.converterdata.service.DataService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -53,15 +53,15 @@ class DataController(
     }*/
 
     @GetMapping("/files")
-    fun getFileList(@RequestParam(required = false) username: String?): ResponseEntity<List<IdFilenameDTO>> {
-        val fileList = dataService.getFileList(username)
+    fun getFileList(@RequestParam(required = false) userId: Long): ResponseEntity<List<FilenameDTO>> {
+        val fileList = dataService.getFileList(userId)
         return ResponseEntity
             .ok()
             .body(fileList)
     }
 
     @GetMapping("/files/{id}")
-    fun getFile(@PathVariable id: Long): ResponseEntity<FilenameBytearrayDTO> {
+    fun getFile(@PathVariable id: Long): ResponseEntity<ContentDTO> {
         val file = dataService.getFile(id)
         return ResponseEntity
             .ok()
@@ -70,7 +70,7 @@ class DataController(
 
     @PostMapping("/files")
     fun setFile(@Valid @RequestBody fileUploadDTO: FileUploadDTO): ResponseEntity<Unit> {
-        dataService.setFile(fileUploadDTO.username, fileUploadDTO.filename, fileUploadDTO.content)
+        dataService.setFile(fileUploadDTO.userId, fileUploadDTO.filename, fileUploadDTO.content)
         return ResponseEntity
             .ok()
             .build()
