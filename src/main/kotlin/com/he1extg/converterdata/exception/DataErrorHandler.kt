@@ -63,6 +63,12 @@ class DataErrorHandler : ResponseEntityExceptionHandler() {
         return buildResponseEntity(apiError)
     }
 
+    @ExceptionHandler(EntityToDtoException::class)
+    fun handlerEntityToDtoException(ex: Exception): ResponseEntity<Any> {
+        val apiError = ApiError(HttpStatus.INTERNAL_SERVER_ERROR, "Internal error.", ex)
+        return buildResponseEntity(apiError)
+    }
+
     /**
      * Database module exception handlers
      */
