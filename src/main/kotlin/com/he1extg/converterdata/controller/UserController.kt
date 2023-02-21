@@ -31,10 +31,10 @@ class UserController(
     }
 
     @PostMapping("/users")
-    fun addUser(@Valid @RequestBody newUser: NewUserDTO): ResponseEntity<Unit> {
-        userService.addUser(newUser.username, newUser.password)
+    fun addUser(@Valid @RequestBody newUser: NewUserDTO): ResponseEntity<UserDTO> {
+        val userDTO = userService.addUser(newUser.username, newUser.password)
         return ResponseEntity
             .ok()
-            .build()
+            .body(userDTO)
     }
 }
