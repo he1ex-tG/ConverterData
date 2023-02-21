@@ -1,15 +1,18 @@
 package com.he1extg.converterdata.service
 
+import com.he1extg.converterdata.dto.file.FilenameDTO
 import com.he1extg.converterdata.dto.user.AuthenticationDTO
 import com.he1extg.converterdata.dto.user.UserDTO
 import com.he1extg.converterdata.entity.ConverterUser
+import com.he1extg.converterdata.repository.ConverterFileRepository
 import com.he1extg.converterdata.repository.ConverterUserRepository
 import org.springframework.stereotype.Service
 import java.io.IOException
 
 @Service
 class UserServiceImpl(
-    private val converterUserRepository: ConverterUserRepository
+    private val converterUserRepository: ConverterUserRepository,
+    private val converterFileRepository: ConverterFileRepository
 ) : UserService {
 
     override fun getUserAuthentication(username: String): AuthenticationDTO {
@@ -23,11 +26,14 @@ class UserServiceImpl(
         val user = converterUserRepository.getUserByUsername(username).orElseThrow {
             IOException("User with username=\"$username\" not found.")
         }
-        return user.toUserDTO()
+        val files = converterFileRepository.getFileListWithIdAndFilenameByConverterUserId(user.id).map {
+            FilenameDTO(it.id, it.filename)
+        }
+        return UserDTO(user.id, user.username, files)
     }
 
 
-    override fun addUser(username: String, password: String) {
+    override fun addUser(username: String, password: String): UserDTO {
         val newUser = ConverterUser(
             username = username,
             password = password,
@@ -36,6 +42,7 @@ class UserServiceImpl(
             credentialsNonExpired = true,
             enabled = true
         )
-        converterUserRepository.save(newUser)
+        val newUserEntity = converterUserRepository.save(newUser)
+        return newUserEntity.toUserDTO()
     }
 }

@@ -7,5 +7,5 @@ interface UserService {
 
     fun getUserAuthentication(username: String): AuthenticationDTO
     fun getUser(username: String): UserDTO
-    fun addUser(username: String, password: String)
+    fun addUser(username: String, password: String): UserDTO
 }
